@@ -29,7 +29,7 @@ Setup the backend and start using the app.
 
 ### Visualizer
 
-![App visualizer](Grocery_app_rideco.jpg)
+![App visualizer](./Grocery_app_rideco.JPG)
 
 
 

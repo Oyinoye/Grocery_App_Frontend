@@ -58,9 +58,8 @@ export default function Home() {
           },
         }
       )
-      .then((res) => {
-        setAddmodal(!addmodal);
-      })
+      .then((res) => setAddmodal(!addmodal))
+      .then((res) => setClicked(!clicked))
       .catch((err) => console.log(err.message));
   }
 
@@ -87,7 +86,7 @@ export default function Home() {
       })
       .then((res) => setProducts(res.data))
       .catch((err) => console.log(err.message));
-  }, [setProducts, token, isOpen, addmodal, clicked]);
+  }, [setProducts, token, isOpen, clicked]);
 
 
 
@@ -115,15 +114,15 @@ export default function Home() {
               </button>
             )}
           </div>
-          {user?.user_id ? (
+          {user?.user_id ? 
             <div className="addtobtn">
               <button className="form__btn" onClick={addModal}>
                 Add to List
               </button>
             </div>
-          ) : (
+           : 
             <h3>Please login to edit your list</h3>
-          )}
+          }
           <div className="classic">
             {products.map((product) => (
               <>
@@ -173,8 +172,8 @@ export default function Home() {
 
                 {/* Modal For products */}
 
-                {user?.user_id ? (
-                  isOpen ? (
+                {user?.user_id ? 
+                  isOpen ? 
                     <div className="popup">
                       <div className="popup__body">
                         <div className="close" onClick={openModal}>
@@ -257,16 +256,22 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                  ) : (
+                   : 
                     ""
-                  )
-                ) : (
+                  
+                 : 
                   ""
-                )}
+                }
 
                 {/* Modal for saving */}
 
-                {addmodal ? (
+             
+              </>
+            ))}
+          </div>
+        </div>
+      </div>
+         {addmodal ? 
                   <div className="popup">
                   <div className="popup__body">
                     <div className="close" onClick={addModal}>
@@ -315,7 +320,7 @@ export default function Home() {
                               name="purchase"
                               id="purchase"
                               value={purchased}
-                              onChange={(e) => setPurchased(!purchased)}
+                              onChange={() => setPurchased(!purchased)}
                             />
                           </div>
                           <div className="popup__button">
@@ -331,15 +336,9 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              ) : (
+               : 
                 ""
-              )}
-              </>
-            ))}
-          </div>
-        </div>
-      </div>
-      
+              }
     </div>
   );
 }
