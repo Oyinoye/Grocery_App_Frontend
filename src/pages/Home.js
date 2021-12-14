@@ -12,7 +12,7 @@ import { userdetailState } from "../atoms/userdetailAtom";
 export default function Home() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [id, setId] = useState([]);
+  const [id, setId] = useState('');
   const [purchased, setPurchased] = useState(false);
   const [products, setProducts] = useRecoilState(productState);
   const [details, setDetails] = useRecoilState(userdetailState);
@@ -23,6 +23,8 @@ export default function Home() {
   const [addmodal, setAddmodal] = useState(false);
   const [clicked, setClicked] = useState(false);
   const token = useRecoilValue(jwtState);
+
+ 
 
   const openModal = () => {
     setIsOpen(!isOpen);
@@ -40,6 +42,33 @@ export default function Home() {
 
   function logout() {
     setCurrentUser("");
+  }
+
+  console.log(id)
+
+  function update(e){
+    console.log(token)
+     e.preventDefault();
+      axios
+        .put(
+          `${id}`,
+          {
+            name: name,
+            description: desc,
+            quantity: quantity,
+            is_purchased: purchased
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          }
+        )
+        .then(openModal)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err.message));
   }
 
 
@@ -79,7 +108,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/api/v1/groceries`,  {
+      .get(`${baseUrl}/api/v1/groceries/`,  {
         headers: {
           Authorization: ` Bearer ${token}`,
         }
@@ -130,7 +159,7 @@ export default function Home() {
                   <div
                     className="product__body"
                     key={product.id}
-                    onClick={() => setId(product.id)}
+                    onClick={() => setId(product.url)}
                   >
                     <div className="product__container" onClick={openModal}>
                       <div className="product__image">
@@ -223,30 +252,14 @@ export default function Home() {
                                   name="purchase"
                                   id="purchase"
                                   value={purchased}
-                                  defaultChecked={purchased}
-                                  onChange={(e) => setPurchased(!purchased)}
+                                  checked={purchased}
+                                  onChange={() => setPurchased(!purchased)}
                                 />
                               </div>
                               <div className="popup__button">
                                 <button
                                   className="form__btn"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    axios
-                                      .put(
-                                        `${product.url}`,
-                                        {
-                                          headers: {
-                                            Authorization: ` Bearer ${token}`,
-                                            "Content-Type": "application/json",
-                                          },
-                                        }
-                                      )
-                                      .then((res) => {
-                                        console.log(res.data);
-                                      })
-                                      .catch((err) => console.log(err.message));
-                                  }}
+                                  onClick={update}
                                 >
                                   update
                                 </button>
@@ -320,6 +333,7 @@ export default function Home() {
                               name="purchase"
                               id="purchase"
                               value={purchased}
+                              checked={purchased}
                               onChange={() => setPurchased(!purchased)}
                             />
                           </div>

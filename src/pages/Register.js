@@ -15,9 +15,10 @@ export default function Register() {
   const history = useHistory();
 
   const baseUrl = "http://localhost:8000";
+
   const register = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/v1/users/', {
+    axios.post(`${baseUrl}/api/v1/users/`, {
         first_name: firstname,
         last_name: lastname,
         username: username,
